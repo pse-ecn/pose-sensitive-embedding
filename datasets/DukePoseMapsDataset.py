@@ -7,9 +7,4 @@ class DukePoseMapsDataset(Market1501PoseMapsDataset):
 		if num_classes is None:
 			num_classes = DukeDataset.DUKE_NUM_TRAINING_CLASSES
 
-		super().__init__(mean=DukeDataset.DUKE_MEAN,
-		                 std=DukeDataset.DUKE_STD,
-		                 num_classes=num_classes,
-		                 data_directory=data_directory,
-		                 dataset_part=dataset_part,
-		                 augment=augment)
+		super().__init__(mean=DukeDataset.DUKE_MEAN, std=DukeDataset.DUKE_STD, num_classes=num_classes, data_directory=data_directory, dataset_part=dataset_part, augment=augment)

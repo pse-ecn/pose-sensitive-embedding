@@ -14,13 +14,7 @@ class MarsDataset(Market1501Dataset):
 		if num_classes is None:
 			num_classes = 625
 
-		super().__init__(mean=mean,
-		                 std=std,
-		                 num_classes=num_classes,
-		                 data_directory=data_directory,
-		                 dataset_part=dataset_part,
-		                 augment=augment,
-		                 png=png)
+		super().__init__(mean=mean, std=std, num_classes=num_classes, data_directory=data_directory, dataset_part=dataset_part, augment=augment, png=png)
 
 	def get_images_from_folder(self):
 		if self._dataset_part is 'train':

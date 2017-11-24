@@ -18,7 +18,7 @@ class RapPoseMapsDataset(RapDataset):
 		return super().get_input_data(is_training)
 
 	def prepare_sliced_data_for_batching(self, sliced_input_data, image_size):
-		def get_pose_map(file_name, path):
+		def get_pose_map(file_name, _):
 			return self._pose_maps[file_name.decode('utf-8')[7:]]
 
 		file_name_tensor, image_path_tensor, label_tensor, view_tensor = sliced_input_data

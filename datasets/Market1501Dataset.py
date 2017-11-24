@@ -17,13 +17,7 @@ class Market1501Dataset(Dataset):
 		if num_classes is None:
 			num_classes = 751
 
-		super().__init__(mean=mean,
-		                 std=std,
-		                 num_classes=num_classes,
-		                 data_directory=data_directory,
-		                 dataset_part=dataset_part,
-		                 augment=augment,
-		                 png=png)
+		super().__init__(mean=mean, std=std, num_classes=num_classes, data_directory=data_directory, dataset_part=dataset_part, augment=augment, png=png)
 
 	def get_input_data(self, is_training):
 		image_paths = self.get_images_from_folder()
@@ -49,7 +43,7 @@ class Market1501Dataset(Dataset):
 		image_tensor = self.read_and_distort_image(file_name_tensor, image_path_tensor, image_size)
 
 		return self.get_dict_for_batching(actual_label_tensor=actual_label_tensor, camera_tensor=camera_tensor, file_name_tensor=file_name_tensor, image_path_tensor=image_path_tensor,
-		                                  image_tensor=image_tensor, label_tensor=label_tensor)
+										  image_tensor=image_tensor, label_tensor=label_tensor)
 
 	def get_images_from_folder(self):
 		data_file = self.get_data_file()
@@ -67,7 +61,7 @@ class Market1501Dataset(Dataset):
 
 	def get_input_function_dictionaries(self, batched_input_data):
 		return {'paths': batched_input_data['path'], 'images': batched_input_data['image'], 'file_names': batched_input_data['file_name']}, \
-		       {'labels': batched_input_data['label'], 'actual_labels': batched_input_data['actual_label'], 'cameras': batched_input_data['camera']}
+			   {'labels': batched_input_data['label'], 'actual_labels': batched_input_data['actual_label'], 'cameras': batched_input_data['camera']}
 
 	@staticmethod
 	def get_label_from_path(path):

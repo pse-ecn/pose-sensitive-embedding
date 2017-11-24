@@ -37,7 +37,7 @@ def block_inception_a(inputs, scope=None, reuse=None):
 	"""Builds Inception-A block for Inception v4 network."""
 	# By default use stride=1 and SAME padding
 	with slim.arg_scope([slim.conv2d, slim.avg_pool2d, slim.max_pool2d],
-	                    stride=1, padding='SAME'):
+						stride=1, padding='SAME'):
 		with tf.variable_scope(scope, 'BlockInceptionA', [inputs], reuse=reuse):
 			with tf.variable_scope('Branch_0'):
 				branch_0 = slim.conv2d(inputs, 96, [1, 1], scope='Conv2d_0a_1x1')
@@ -58,19 +58,19 @@ def block_reduction_a(inputs, scope=None, reuse=None):
 	"""Builds Reduction-A block for Inception v4 network."""
 	# By default use stride=1 and SAME padding
 	with slim.arg_scope([slim.conv2d, slim.avg_pool2d, slim.max_pool2d],
-	                    stride=1, padding='SAME'):
+						stride=1, padding='SAME'):
 		with tf.variable_scope(scope, 'BlockReductionA', [inputs], reuse=reuse):
 			with tf.variable_scope('Branch_0'):
 				branch_0 = slim.conv2d(inputs, 384, [3, 3], stride=2, padding='VALID',
-				                       scope='Conv2d_1a_3x3')
+									   scope='Conv2d_1a_3x3')
 			with tf.variable_scope('Branch_1'):
 				branch_1 = slim.conv2d(inputs, 192, [1, 1], scope='Conv2d_0a_1x1')
 				branch_1 = slim.conv2d(branch_1, 224, [3, 3], scope='Conv2d_0b_3x3')
 				branch_1 = slim.conv2d(branch_1, 256, [3, 3], stride=2,
-				                       padding='VALID', scope='Conv2d_1a_3x3')
+									   padding='VALID', scope='Conv2d_1a_3x3')
 			with tf.variable_scope('Branch_2'):
 				branch_2 = slim.max_pool2d(inputs, [3, 3], stride=2, padding='VALID',
-				                           scope='MaxPool_1a_3x3')
+										   scope='MaxPool_1a_3x3')
 			return tf.concat(axis=3, values=[branch_0, branch_1, branch_2])
 
 
@@ -78,7 +78,7 @@ def block_inception_b(inputs, scope=None, reuse=None):
 	"""Builds Inception-B block for Inception v4 network."""
 	# By default use stride=1 and SAME padding
 	with slim.arg_scope([slim.conv2d, slim.avg_pool2d, slim.max_pool2d],
-	                    stride=1, padding='SAME'):
+						stride=1, padding='SAME'):
 		with tf.variable_scope(scope, 'BlockInceptionB', [inputs], reuse=reuse):
 			with tf.variable_scope('Branch_0'):
 				branch_0 = slim.conv2d(inputs, 384, [1, 1], scope='Conv2d_0a_1x1')
@@ -102,21 +102,21 @@ def block_reduction_b(inputs, scope=None, reuse=None):
 	"""Builds Reduction-B block for Inception v4 network."""
 	# By default use stride=1 and SAME padding
 	with slim.arg_scope([slim.conv2d, slim.avg_pool2d, slim.max_pool2d],
-	                    stride=1, padding='SAME'):
+						stride=1, padding='SAME'):
 		with tf.variable_scope(scope, 'BlockReductionB', [inputs], reuse=reuse):
 			with tf.variable_scope('Branch_0'):
 				branch_0 = slim.conv2d(inputs, 192, [1, 1], scope='Conv2d_0a_1x1')
 				branch_0 = slim.conv2d(branch_0, 192, [3, 3], stride=2,
-				                       padding='VALID', scope='Conv2d_1a_3x3')
+									   padding='VALID', scope='Conv2d_1a_3x3')
 			with tf.variable_scope('Branch_1'):
 				branch_1 = slim.conv2d(inputs, 256, [1, 1], scope='Conv2d_0a_1x1')
 				branch_1 = slim.conv2d(branch_1, 256, [1, 7], scope='Conv2d_0b_1x7')
 				branch_1 = slim.conv2d(branch_1, 320, [7, 1], scope='Conv2d_0c_7x1')
 				branch_1 = slim.conv2d(branch_1, 320, [3, 3], stride=2,
-				                       padding='VALID', scope='Conv2d_1a_3x3')
+									   padding='VALID', scope='Conv2d_1a_3x3')
 			with tf.variable_scope('Branch_2'):
 				branch_2 = slim.max_pool2d(inputs, [3, 3], stride=2, padding='VALID',
-				                           scope='MaxPool_1a_3x3')
+										   scope='MaxPool_1a_3x3')
 			return tf.concat(axis=3, values=[branch_0, branch_1, branch_2])
 
 
@@ -124,7 +124,7 @@ def block_inception_c(inputs, scope=None, reuse=None):
 	"""Builds Inception-C block for Inception v4 network."""
 	# By default use stride=1 and SAME padding
 	with slim.arg_scope([slim.conv2d, slim.avg_pool2d, slim.max_pool2d],
-	                    stride=1, padding='SAME'):
+						stride=1, padding='SAME'):
 		with tf.variable_scope(scope, 'BlockInceptionC', [inputs], reuse=reuse):
 			with tf.variable_scope('Branch_0'):
 				branch_0 = slim.conv2d(inputs, 256, [1, 1], scope='Conv2d_0a_1x1')
@@ -174,7 +174,7 @@ def inception_v4_views_base(inputs, final_endpoint='Mixed_7d', scope=None, num_v
 
 	with tf.variable_scope(scope, 'InceptionV4', [inputs]):
 		with slim.arg_scope([slim.conv2d, slim.max_pool2d, slim.avg_pool2d],
-		                    stride=1, padding='SAME'):
+							stride=1, padding='SAME'):
 			# 299 x 299 x 3
 			net = slim.conv2d(inputs, 32, [3, 3], stride=2, padding='VALID', scope='Conv2d_1a_3x3')
 			if add_and_check_final('Conv2d_1a_3x3', net): return net, end_points

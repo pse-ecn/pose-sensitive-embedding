@@ -7,13 +7,7 @@ class Cuhk03PoseMapsDataset(Market1501PoseMapsDataset):
 		if num_classes is None:
 			num_classes = CUHK03_NUM_TRAINING_CLASSES
 
-		super().__init__(mean=CUHK03_MEAN,
-		                 std=CUHK03_STD,
-		                 num_classes=num_classes,
-		                 data_directory=data_directory,
-		                 dataset_part=dataset_part,
-		                 augment=augment,
-		                 png=True)
+		super().__init__(mean=CUHK03_MEAN, std=CUHK03_STD, num_classes=num_classes, data_directory=data_directory, dataset_part=dataset_part, augment=augment, png=True)
 
 	@staticmethod
 	def get_label_from_path(path):

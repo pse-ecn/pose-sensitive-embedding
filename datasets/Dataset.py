@@ -89,7 +89,6 @@ class Dataset(ABC):
 				image_tensor = tf.image.random_flip_left_right(image_tensor)
 				self.add_image_summary(image_tensor)
 
-
 		else:
 			image_tensor = self._read_and_normalize_image(image_path_tensor, image_size, image_size)
 
@@ -112,7 +111,7 @@ class Dataset(ABC):
 
 	@staticmethod
 	def get_dict_for_batching(actual_label_tensor=None, camera_tensor=None, file_name_tensor=None, image_path_tensor=None, image_tensor=None, label_tensor=None, view_label=None,
-	                          multi_class_label=None):
+							  multi_class_label=None):
 		dictionary = {}
 
 		if actual_label_tensor is not None:

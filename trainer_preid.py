@@ -7,25 +7,25 @@ from tensorflow.contrib.learn import RunConfig
 from datasets.DatasetFactory import DatasetFactory
 from evaluation.evaluation_helper import get_evaluation_summary_writer
 from helper.model_helper import get_model_function, get_input_function
-from predictor_preid import run_evaluation_conserving_best
 from nets import nets_factory
+from predictor_preid import run_evaluation_conserving_best
 
 slim = tf.contrib.slim
 
 
 def start_training(data_directory, dataset_name, output_directory, network_name, batch_size, learning_rate, batch_threads, num_epochs, initial_checkpoint, checkpoint_exclude_scopes,
-                   ignore_missing_variables, trainable_scopes, not_trainable_scopes, fixed_learning_rate, learning_rate_decay_rate, do_evaluation, learning_rate_decay_steps):
+				   ignore_missing_variables, trainable_scopes, not_trainable_scopes, fixed_learning_rate, learning_rate_decay_rate, do_evaluation, learning_rate_decay_steps):
 	dataset_factory = DatasetFactory(dataset_name=dataset_name, data_directory=data_directory)
 	model_params = {'learning_rate': learning_rate,
-	                'fixed_learning_rate': fixed_learning_rate,
-	                'learning_rate_decay_rate': learning_rate_decay_rate,
-	                'learning_rate_decay_steps': (dataset_factory.get_dataset('train').get_number_of_samples() if learning_rate_decay_steps is None else learning_rate_decay_steps) // batch_size}
+					'fixed_learning_rate': fixed_learning_rate,
+					'learning_rate_decay_rate': learning_rate_decay_rate,
+					'learning_rate_decay_steps': (dataset_factory.get_dataset('train').get_number_of_samples() if learning_rate_decay_steps is None else learning_rate_decay_steps) // batch_size}
 
 	run_config = RunConfig(keep_checkpoint_max=10, save_checkpoints_steps=None)
 	# Instantiate Estimator
 	estimator = tf.estimator.Estimator(
 		model_fn=get_model_function(output_directory, network_name, dataset_factory.get_dataset('train').num_classes(), initial_checkpoint, checkpoint_exclude_scopes, ignore_missing_variables,
-		                            trainable_scopes, not_trainable_scopes),
+									trainable_scopes, not_trainable_scopes),
 		params=model_params,
 		model_dir=output_directory,
 		config=run_config)
@@ -39,7 +39,7 @@ def start_training(data_directory, dataset_name, output_directory, network_name,
 
 		if do_evaluation:
 			run_evaluation_conserving_best(estimator=estimator, batch_size=2 * batch_size, batch_threads=batch_threads, dataset_factory=dataset_factory, image_size=image_size,
-			                               evaluation_summary_writer=evaluation_summary_writer)
+										   evaluation_summary_writer=evaluation_summary_writer)
 
 	print('Finished training')
 
@@ -82,8 +82,8 @@ def main():
 		os.makedirs(args.output_directory)
 
 	start_training(args.data_directory, args.dataset_name, args.output_directory, args.network_name, args.batch_size, args.learning_rate, args.batch_threads, args.num_epochs,
-	               args.initial_checkpoint, args.checkpoint_exclude_scopes, args.ignore_missing_variables, args.trainable_scopes, args.not_trainable_scopes, args.fixed_learning_rate,
-	               args.learning_rate_decay_rate, not args.no_evaluation, args.learning_rate_decay_steps)
+				   args.initial_checkpoint, args.checkpoint_exclude_scopes, args.ignore_missing_variables, args.trainable_scopes, args.not_trainable_scopes, args.fixed_learning_rate,
+				   args.learning_rate_decay_rate, not args.no_evaluation, args.learning_rate_decay_steps)
 
 	print('Exiting ...')
 

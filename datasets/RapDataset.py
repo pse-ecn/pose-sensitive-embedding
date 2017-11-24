@@ -2,6 +2,9 @@ import os
 
 from datasets.Dataset import Dataset
 
+RAP_MEAN = [105.98118096, 105.37399591, 100.98540261]
+RAP_STD = [58.20315763, 53.74679653, 55.90117479]
+
 
 class RapDataset(Dataset):
 	FILE_BY_PART = {'train': 'train_list_52.txt', 'test': 'test_list_52.txt', 'val': 'val_list_52.txt'}
@@ -11,12 +14,7 @@ class RapDataset(Dataset):
 		if num_classes is None:
 			num_classes = 51
 
-		super().__init__(mean=[105.98118096, 105.37399591, 100.98540261],
-		                 std=[58.20315763, 53.74679653, 55.90117479],
-		                 num_classes=num_classes,
-		                 data_directory=data_directory,
-		                 dataset_part=dataset_part,
-		                 augment=augment)
+		super().__init__(mean=RAP_MEAN, std=RAP_STD, num_classes=num_classes, data_directory=data_directory, dataset_part=dataset_part, augment=augment)
 
 	def get_input_data(self, is_training):
 		data_file_name = self.get_data_file_for_mode()
@@ -58,7 +56,7 @@ class RapDataset(Dataset):
 
 	def get_input_function_dictionaries(self, batched_input_data):
 		return {'file_names': batched_input_data['file_name'], 'paths': batched_input_data['path'], 'images': batched_input_data['image']}, \
-		       {'multi_class_labels': batched_input_data['multi_class_label'], 'views': batched_input_data['view']}
+			   {'multi_class_labels': batched_input_data['multi_class_label'], 'views': batched_input_data['view']}
 
 	def get_data_file_for_mode(self):
 		data_file = self.FILE_BY_PART[self._dataset_part]

@@ -13,18 +13,18 @@ slim = tf.contrib.slim
 
 
 def start_training(data_directory, dataset_name, output_directory, network_name, batch_size, learning_rate, batch_threads, num_epochs, initial_checkpoint, checkpoint_exclude_scopes,
-                   ignore_missing_variables, trainable_scopes, fixed_learning_rate, learning_rate_decay_rate, num_classes):
+				   ignore_missing_variables, trainable_scopes, fixed_learning_rate, learning_rate_decay_rate, num_classes):
 	dataset_factory = DatasetFactory(dataset_name=dataset_name, data_directory=data_directory)
 	model_params = {'learning_rate': learning_rate,
-	                'fixed_learning_rate': fixed_learning_rate,
-	                'learning_rate_decay_rate': learning_rate_decay_rate,
-	                'learning_rate_decay_steps': dataset_factory.get_dataset('train').get_number_of_samples() // batch_size}
+					'fixed_learning_rate': fixed_learning_rate,
+					'learning_rate_decay_rate': learning_rate_decay_rate,
+					'learning_rate_decay_steps': dataset_factory.get_dataset('train').get_number_of_samples() // batch_size}
 
 	run_config = RunConfig(keep_checkpoint_max=10, save_checkpoints_steps=None)
 	# Instantiate Estimator
 	estimator = tf.estimator.Estimator(
 		model_fn=get_model_function(output_directory, network_name, dataset_factory.get_dataset('train').num_classes() if num_classes is None else num_classes, initial_checkpoint,
-		                            checkpoint_exclude_scopes, ignore_missing_variables, trainable_scopes),
+									checkpoint_exclude_scopes, ignore_missing_variables, trainable_scopes),
 		params=model_params,
 		model_dir=output_directory,
 		config=run_config)
@@ -90,8 +90,8 @@ def main():
 		os.makedirs(args.output_directory)
 
 	start_training(args.data_directory, args.dataset_name, args.output_directory, args.network_name, args.batch_size, args.learning_rate, args.batch_threads, args.num_epochs,
-	               args.initial_checkpoint, args.checkpoint_exclude_scopes, args.ignore_missing_variables, args.trainable_scopes, args.fixed_learning_rate, args.learning_rate_decay_rate,
-	               args.num_classes)
+				   args.initial_checkpoint, args.checkpoint_exclude_scopes, args.ignore_missing_variables, args.trainable_scopes, args.fixed_learning_rate, args.learning_rate_decay_rate,
+				   args.num_classes)
 
 	print('Exiting ...')
 

@@ -60,7 +60,7 @@ def _conv_block(inputs, num_filters, scope=None, outputs_collections=None):
 
 @slim.add_arg_scope
 def _dense_block(inputs, num_layers, num_filters, growth_rate,
-                 grow_num_filters=True, scope=None, outputs_collections=None):
+				 grow_num_filters=True, scope=None, outputs_collections=None):
 	with tf.variable_scope(scope, 'dense_blockx', [inputs]) as sc:
 		net = inputs
 		for i in range(num_layers):
@@ -77,7 +77,7 @@ def _dense_block(inputs, num_layers, num_filters, growth_rate,
 
 @slim.add_arg_scope
 def _transition_block(inputs, num_filters, compression=1.0,
-                      scope=None, outputs_collections=None):
+					  scope=None, outputs_collections=None):
 	num_filters = int(num_filters * compression)
 	with tf.variable_scope(scope, 'transition_blockx', [inputs]) as sc:
 		net = inputs
@@ -113,15 +113,15 @@ def add_views_branch(net, dropout_rate, end_points):
 
 
 def densenet_views(inputs,
-                   num_classes=1000,
-                   reduction=None,
-                   growth_rate=None,
-                   num_filters=None,
-                   num_layers=None,
-                   dropout_rate=None,
-                   is_training=True,
-                   reuse=None,
-                   scope=None):
+				   num_classes=1000,
+				   reduction=None,
+				   growth_rate=None,
+				   num_filters=None,
+				   num_layers=None,
+				   dropout_rate=None,
+				   is_training=True,
+				   reuse=None,
+				   scope=None):
 	assert reduction is not None
 	assert growth_rate is not None
 	assert num_filters is not None
@@ -134,8 +134,8 @@ def densenet_views(inputs,
 	with tf.variable_scope(scope, 'densenetxxx', [inputs, num_classes], reuse=reuse) as sc:
 		end_points_collection = sc.name + '_end_points'
 		with slim.arg_scope([slim.batch_norm, slim.dropout], is_training=is_training), \
-		     slim.arg_scope([slim.conv2d, _conv, _conv_block, _dense_block, _transition_block], outputs_collections=end_points_collection), \
-		     slim.arg_scope([_conv], dropout_rate=dropout_rate):
+			 slim.arg_scope([slim.conv2d, _conv, _conv_block, _dense_block, _transition_block], outputs_collections=end_points_collection), \
+			 slim.arg_scope([_conv], dropout_rate=dropout_rate):
 			net = inputs
 
 			# initial convolution
@@ -195,7 +195,7 @@ def densenet_views(inputs,
 
 def densenet121_views(inputs, num_classes=1000, is_training=True, reuse=None):
 	return densenet_views(inputs, num_classes=num_classes, reduction=0.5, growth_rate=32, num_filters=64, num_layers=[6, 12, 24, 16], is_training=is_training, reuse=reuse,
-	                      dropout_rate=0.2 if is_training else None, scope='densenet121')
+						  dropout_rate=0.2 if is_training else None, scope='densenet121')
 
 
 densenet121_views.default_image_size = 224
@@ -203,7 +203,7 @@ densenet121_views.default_image_size = 224
 
 def densenet161_views(inputs, num_classes=1000, is_training=True, reuse=None):
 	return densenet_views(inputs, num_classes=num_classes, reduction=0.5, growth_rate=48, num_filters=96, num_layers=[6, 12, 36, 24], is_training=is_training, reuse=reuse,
-	                      dropout_rate=0.2 if is_training else None, scope='densenet161')
+						  dropout_rate=0.2 if is_training else None, scope='densenet161')
 
 
 densenet161_views.default_image_size = 224
@@ -211,7 +211,7 @@ densenet161_views.default_image_size = 224
 
 def densenet169_views(inputs, num_classes=1000, is_training=True, reuse=None):
 	return densenet_views(inputs, num_classes=num_classes, reduction=0.5, growth_rate=32, num_filters=64, num_layers=[6, 12, 32, 32], is_training=is_training, reuse=reuse,
-	                      dropout_rate=0.2 if is_training else None, scope='densenet169')
+						  dropout_rate=0.2 if is_training else None, scope='densenet169')
 
 
 densenet169_views.default_image_size = 224

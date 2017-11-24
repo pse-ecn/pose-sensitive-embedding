@@ -97,27 +97,27 @@ def bottleneck(inputs, depth, depth_bottleneck, stride, rate=1, outputs_collecti
 
 		residual = slim.conv2d(inputs, depth_bottleneck, [1, 1], stride=1, scope='conv1')
 		residual = resnet_utils_views_v2.conv2d_same(residual, depth_bottleneck, 3, stride,
-		                                             rate=rate, scope='conv2')
+													 rate=rate, scope='conv2')
 		residual = slim.conv2d(residual, depth, [1, 1], stride=1,
-		                       activation_fn=None, scope='conv3')
+							   activation_fn=None, scope='conv3')
 
 		output = tf.nn.relu(shortcut + residual)
 
 		return slim.utils.collect_named_outputs(outputs_collections,
-		                                        sc.original_name_scope,
-		                                        output)
+												sc.original_name_scope,
+												output)
 
 
 def resnet_v1_views_v2(inputs,
-                       blocks,
-                       num_classes=None,
-                       is_training=True,
-                       global_pool=True,
-                       output_stride=None,
-                       include_root_block=True,
-                       spatial_squeeze=True,
-                       reuse=None,
-                       scope=None):
+					   blocks,
+					   num_classes=None,
+					   is_training=True,
+					   global_pool=True,
+					   output_stride=None,
+					   include_root_block=True,
+					   spatial_squeeze=True,
+					   reuse=None,
+					   scope=None):
 	"""Generator for v1 ResNet models.
 
 	This function generates a family of ResNet v1 models. See the resnet_v1_*()
@@ -213,12 +213,12 @@ resnet_v1_views_v2.default_image_size = 224
 
 
 def resnet_v1_50_views_v2(inputs,
-                          num_classes=None,
-                          is_training=True,
-                          global_pool=True,
-                          output_stride=None,
-                          reuse=None,
-                          scope='resnet_v1_50'):
+						  num_classes=None,
+						  is_training=True,
+						  global_pool=True,
+						  output_stride=None,
+						  reuse=None,
+						  scope='resnet_v1_50'):
 	"""ResNet-50 model of [1]. See resnet_v1() for arg and return description."""
 	blocks = [
 		resnet_utils_views_v2.Block(
@@ -231,20 +231,20 @@ def resnet_v1_50_views_v2(inputs,
 			'block4', bottleneck, [(2048, 512, 1)] * 3)
 	]
 	return resnet_v1_views_v2(inputs, blocks, num_classes, is_training,
-	                          global_pool=global_pool, output_stride=output_stride,
-	                          include_root_block=True, reuse=reuse, scope=scope)
+							  global_pool=global_pool, output_stride=output_stride,
+							  include_root_block=True, reuse=reuse, scope=scope)
 
 
 resnet_v1_50_views_v2.default_image_size = resnet_v1_views_v2.default_image_size
 
 
 def resnet_v1_101_views_v2(inputs,
-                           num_classes=None,
-                           is_training=True,
-                           global_pool=True,
-                           output_stride=None,
-                           reuse=None,
-                           scope='resnet_v1_101'):
+						   num_classes=None,
+						   is_training=True,
+						   global_pool=True,
+						   output_stride=None,
+						   reuse=None,
+						   scope='resnet_v1_101'):
 	"""ResNet-101 model of [1]. See resnet_v1() for arg and return description."""
 	blocks = [
 		resnet_utils_views_v2.Block(
@@ -257,20 +257,20 @@ def resnet_v1_101_views_v2(inputs,
 			'block4', bottleneck, [(2048, 512, 1)] * 3)
 	]
 	return resnet_v1_views_v2(inputs, blocks, num_classes, is_training,
-	                          global_pool=global_pool, output_stride=output_stride,
-	                          include_root_block=True, reuse=reuse, scope=scope)
+							  global_pool=global_pool, output_stride=output_stride,
+							  include_root_block=True, reuse=reuse, scope=scope)
 
 
 resnet_v1_101_views_v2.default_image_size = resnet_v1_views_v2.default_image_size
 
 
 def resnet_v1_152_views_v2(inputs,
-                           num_classes=None,
-                           is_training=True,
-                           global_pool=True,
-                           output_stride=None,
-                           reuse=None,
-                           scope='resnet_v1_152'):
+						   num_classes=None,
+						   is_training=True,
+						   global_pool=True,
+						   output_stride=None,
+						   reuse=None,
+						   scope='resnet_v1_152'):
 	"""ResNet-152 model of [1]. See resnet_v1() for arg and return description."""
 	blocks = [
 		resnet_utils_views_v2.Block(
@@ -282,20 +282,20 @@ def resnet_v1_152_views_v2(inputs,
 		resnet_utils_views_v2.Block(
 			'block4', bottleneck, [(2048, 512, 1)] * 3)]
 	return resnet_v1_views_v2(inputs, blocks, num_classes, is_training,
-	                          global_pool=global_pool, output_stride=output_stride,
-	                          include_root_block=True, reuse=reuse, scope=scope)
+							  global_pool=global_pool, output_stride=output_stride,
+							  include_root_block=True, reuse=reuse, scope=scope)
 
 
 resnet_v1_152_views_v2.default_image_size = resnet_v1_views_v2.default_image_size
 
 
 def resnet_v1_200_views_v2(inputs,
-                           num_classes=None,
-                           is_training=True,
-                           global_pool=True,
-                           output_stride=None,
-                           reuse=None,
-                           scope='resnet_v1_200'):
+						   num_classes=None,
+						   is_training=True,
+						   global_pool=True,
+						   output_stride=None,
+						   reuse=None,
+						   scope='resnet_v1_200'):
 	"""ResNet-200 model of [2]. See resnet_v1() for arg and return description."""
 	blocks = [
 		resnet_utils_views_v2.Block(
@@ -307,8 +307,8 @@ def resnet_v1_200_views_v2(inputs,
 		resnet_utils_views_v2.Block(
 			'block4', bottleneck, [(2048, 512, 1)] * 3)]
 	return resnet_v1_views_v2(inputs, blocks, num_classes, is_training,
-	                          global_pool=global_pool, output_stride=output_stride,
-	                          include_root_block=True, reuse=reuse, scope=scope)
+							  global_pool=global_pool, output_stride=output_stride,
+							  include_root_block=True, reuse=reuse, scope=scope)
 
 
 resnet_v1_200_views_v2.default_image_size = resnet_v1_views_v2.default_image_size

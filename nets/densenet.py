@@ -98,7 +98,7 @@ def densenet(inputs, num_classes=1000, reduction=None, growth_rate=None, num_fil
 	with tf.variable_scope(scope, 'densenetxxx', [inputs, num_classes], reuse=reuse) as sc:
 		end_points_collection = sc.name + '_end_points'
 		with slim.arg_scope([slim.batch_norm, slim.dropout], is_training=is_training), slim.arg_scope([slim.conv2d, _conv, _conv_block, _dense_block, _transition_block],
-		                                                                                              outputs_collections=end_points_collection), slim.arg_scope([_conv], dropout_rate=dropout_rate):
+																									  outputs_collections=end_points_collection), slim.arg_scope([_conv], dropout_rate=dropout_rate):
 			net = inputs
 
 			# initial convolution
@@ -139,7 +139,7 @@ def densenet(inputs, num_classes=1000, reduction=None, growth_rate=None, num_fil
 
 def densenet121(inputs, num_classes=1000, is_training=True, reuse=None):
 	return densenet(inputs, num_classes=num_classes, reduction=0.5, growth_rate=32, num_filters=64, num_layers=[6, 12, 24, 16], is_training=is_training, reuse=reuse,
-	                dropout_rate=0.2 if is_training else None, scope='densenet121')
+					dropout_rate=0.2 if is_training else None, scope='densenet121')
 
 
 densenet121.default_image_size = 224
@@ -147,7 +147,7 @@ densenet121.default_image_size = 224
 
 def densenet161(inputs, num_classes=1000, is_training=True, reuse=None):
 	return densenet(inputs, num_classes=num_classes, reduction=0.5, growth_rate=48, num_filters=96, num_layers=[6, 12, 36, 24], is_training=is_training, reuse=reuse,
-	                dropout_rate=0.2 if is_training else None, scope='densenet161')
+					dropout_rate=0.2 if is_training else None, scope='densenet161')
 
 
 densenet161.default_image_size = 224
@@ -155,7 +155,7 @@ densenet161.default_image_size = 224
 
 def densenet169(inputs, num_classes=1000, is_training=True, reuse=None):
 	return densenet(inputs, num_classes=num_classes, reduction=0.5, growth_rate=32, num_filters=64, num_layers=[6, 12, 32, 32], is_training=is_training, reuse=reuse,
-	                dropout_rate=0.1 if is_training else None, scope='densenet169')
+					dropout_rate=0.1 if is_training else None, scope='densenet169')
 
 
 densenet169.default_image_size = 224

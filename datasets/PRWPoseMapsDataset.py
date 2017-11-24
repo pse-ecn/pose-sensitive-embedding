@@ -14,13 +14,7 @@ class PRWPoseMapsDataset(Market1501PoseMapsDataset):
 		if num_classes is None:
 			num_classes = PRW_NUM_TRAINING_CLASSES
 
-		super().__init__(mean=mean,
-		                 std=std,
-		                 num_classes=num_classes,
-		                 data_directory=data_directory,
-		                 dataset_part=dataset_part,
-		                 augment=augment,
-		                 png=png)
+		super().__init__(mean=mean, std=std, num_classes=num_classes, data_directory=data_directory, dataset_part=dataset_part, augment=augment, png=png)
 
 	def get_input_data(self, is_training):
 		if self._dataset_part is 'test':

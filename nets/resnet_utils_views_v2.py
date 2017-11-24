@@ -114,16 +114,16 @@ def conv2d_same(inputs, num_outputs, kernel_size, stride, rate=1, scope=None):
 	"""
 	if stride == 1:
 		return slim.conv2d(inputs, num_outputs, kernel_size, stride=1, rate=rate,
-		                   padding='SAME', scope=scope)
+						   padding='SAME', scope=scope)
 	else:
 		kernel_size_effective = kernel_size + (kernel_size - 1) * (rate - 1)
 		pad_total = kernel_size_effective - 1
 		pad_beg = pad_total // 2
 		pad_end = pad_total - pad_beg
 		inputs = tf.pad(inputs,
-		                [[0, 0], [pad_beg, pad_end], [pad_beg, pad_end], [0, 0]])
+						[[0, 0], [pad_beg, pad_end], [pad_beg, pad_end], [0, 0]])
 		return slim.conv2d(inputs, num_outputs, kernel_size, stride=stride,
-		                   rate=rate, padding='VALID', scope=scope)
+						   rate=rate, padding='VALID', scope=scope)
 
 
 @slim.add_arg_scope
@@ -232,27 +232,27 @@ def add_block(block, current_stride, net, output_stride, outputs_collections, ra
 				# current unit's stride for use in subsequent layers.
 				if output_stride is not None and current_stride == output_stride:
 					net = block.unit_fn(net,
-					                    depth=unit_depth,
-					                    depth_bottleneck=unit_depth_bottleneck,
-					                    stride=1,
-					                    rate=rate)
+										depth=unit_depth,
+										depth_bottleneck=unit_depth_bottleneck,
+										stride=1,
+										rate=rate)
 					rate *= unit_stride
 
 				else:
 					net = block.unit_fn(net,
-					                    depth=unit_depth,
-					                    depth_bottleneck=unit_depth_bottleneck,
-					                    stride=unit_stride,
-					                    rate=1)
+										depth=unit_depth,
+										depth_bottleneck=unit_depth_bottleneck,
+										stride=unit_stride,
+										rate=1)
 					current_stride *= unit_stride
 		net = slim.utils.collect_named_outputs(outputs_collections, sc.name, net)
 	return current_stride, net
 
 
 def resnet_arg_scope(weight_decay=0.0001,
-                     batch_norm_decay=0.997,
-                     batch_norm_epsilon=1e-5,
-                     batch_norm_scale=True):
+					 batch_norm_decay=0.997,
+					 batch_norm_epsilon=1e-5,
+					 batch_norm_scale=True):
 	"""Defines the default ResNet arg scope.
 
 	TODO(gpapan): The batch-normalization related default values above are
@@ -280,12 +280,12 @@ def resnet_arg_scope(weight_decay=0.0001,
 	}
 
 	with slim.arg_scope(
-		[slim.conv2d],
-		weights_regularizer=slim.l2_regularizer(weight_decay),
-		weights_initializer=slim.variance_scaling_initializer(),
-		activation_fn=tf.nn.relu,
-		normalizer_fn=slim.batch_norm,
-		normalizer_params=batch_norm_params):
+			[slim.conv2d],
+			weights_regularizer=slim.l2_regularizer(weight_decay),
+			weights_initializer=slim.variance_scaling_initializer(),
+			activation_fn=tf.nn.relu,
+			normalizer_fn=slim.batch_norm,
+			normalizer_params=batch_norm_params):
 		with slim.arg_scope([slim.batch_norm], **batch_norm_params):
 			# The following implies padding='SAME' for pool1, which makes feature
 			# alignment easier for dense prediction tasks. This is also used in

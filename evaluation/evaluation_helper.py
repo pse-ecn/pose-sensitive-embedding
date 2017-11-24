@@ -61,10 +61,10 @@ class MatlabEvaluationSummaryWriter:
 	def write_evaluation_result(self, global_step, evaluation_result: MatlabEvaluationResult):
 		with tf.Session(graph=self._evaluation_graph) as sess:
 			summary = sess.run(self._eval_summary, feed_dict={self._map_placeholder: evaluation_result.mAP,
-			                                                  self._rank1_placeholder: evaluation_result.rank1,
-			                                                  self._rank5_placeholder: evaluation_result.rank5,
-			                                                  self._rank10_placeholder: evaluation_result.rank10,
-			                                                  self._rank50_placeholder: evaluation_result.rank50})
+															  self._rank1_placeholder: evaluation_result.rank1,
+															  self._rank5_placeholder: evaluation_result.rank5,
+															  self._rank10_placeholder: evaluation_result.rank10,
+															  self._rank50_placeholder: evaluation_result.rank50})
 			self._eval_summary_writer.add_summary(summary, global_step)
 
 

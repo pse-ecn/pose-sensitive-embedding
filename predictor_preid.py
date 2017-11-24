@@ -96,7 +96,7 @@ def run_prediction_and_store_features(dataset_factory, batch_size, batch_threads
 	num_samples = dataset.get_number_of_samples()
 
 	with open(output_directory + '/features.csv', 'w', newline='') as features_file, open(output_directory + '/labels.csv', 'w', newline='') as labels_file, \
-		open(output_directory + '/cameras.csv', 'w', newline='') as cameras_file, open(output_directory + '/names.csv', 'w', newline='') as file_names_file:
+			open(output_directory + '/cameras.csv', 'w', newline='') as cameras_file, open(output_directory + '/names.csv', 'w', newline='') as file_names_file:
 
 		features_writer = csv.writer(features_file, delimiter=',')
 		labels_writer = csv.writer(labels_file, delimiter=',')

@@ -10,9 +10,4 @@ class DukeDataset(Market1501Dataset):
 		if num_classes is None:
 			num_classes = DUKE_NUM_TRAINING_CLASSES
 
-		super().__init__(mean=DUKE_MEAN,
-		                 std=DUKE_STD,
-		                 num_classes=num_classes,
-		                 data_directory=data_directory,
-		                 dataset_part=dataset_part,
-		                 augment=augment)
+		super().__init__(mean=DUKE_MEAN, std=DUKE_STD, num_classes=num_classes, data_directory=data_directory, dataset_part=dataset_part, augment=augment)
