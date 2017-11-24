@@ -1,3 +1,5 @@
+%% This function is from https://github.com/zhunzhong07/person-re-ranking by Zhong et al.
+
 function [ap, cmc] = compute_AP(good_image, junk_image, index)
 
 cmc = zeros(length(index), 1);

@@ -17,10 +17,10 @@ def run_matlab_evaluation(path, dataset_name):
 
 	if dataset_name == 'cuhk03' or dataset_name == 'cuhk03-pose-maps':
 		print('Running cuhk evaluation...')
-		eval_result = eng.CUHK03EvaluationForPathShort(path)
+		eval_result = eng.CUHK03EvalForPath(path)
 	else:
 		print('Running market evaluation...')
-		eval_result = eng.evalScriptWithPath('marketDistance', path)
+		eval_result = eng.MarketEvalForPath(path)
 
 	ranks = eval_result['rec_rates'][0]
 	return MatlabEvaluationResult(mAP=eval_result['mAP'], rank1=ranks[0], rank5=ranks[4], rank10=ranks[9], rank50=ranks[49])

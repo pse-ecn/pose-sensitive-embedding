@@ -1,26 +1,12 @@
-function result = CUHK03EvaluationForPathShort(evalPath)
+%% This code was inspired by the code of
+%% Zhun Zhong, Liang Zheng, Donglin Cao, Shaozi Li,
+%% Re-ranking Person Re-identification with k-reciprocal Encoding, CVPR, 2017.
 
-    %**************************************************%
-    % This code implements IDE baseline for the CUHK03 %
-    % dataset under the new traning/testing protocol.  %
-    % Please modify the path to your own folder.       %
-    % We use the mAP and rank-1 rate as evaluation     %
-    %**************************************************%
-    % if you find this code useful in your research, please kindly cite our
-    % paper as,
-    % Zhun Zhong, Liang Zheng, Donglin Cao, Shaozi Li,
-    % Re-ranking Person Re-identification with k-reciprocal Encoding, CVPR, 2017.
-
-
-    % Please download CUHK03 dataset and unzip it in the "dataset/CUHK03" folder.
-    addpath(genpath('kReciprocalRerank/LOMO_XQDA/'));
-    addpath(genpath('kReciprocalRerank/utils/'));
-    addpath(genpath('utils/'));
-
+function result = CUHK03EvalForPath(evalPath)
+    addpath(genpath('utils'))
 
     detected_or_labeled = 'labeled'; % detected/labeled
     protocol = load(['kReciprocalRerank/data/CUHK03/cuhk03_new_protocol_config_' detected_or_labeled '.mat']);
-
 
     queryMat=csvread([evalPath '/query/features.csv']);
     queryNames = readFileByLines([evalPath '/query/names.csv']);
