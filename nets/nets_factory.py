@@ -24,25 +24,23 @@ import tensorflow as tf
 
 from nets import densenet, densenet_views
 from nets import inception_v4, inception_v4_views
-from nets import resnet_v1, resnet_v1_views_v2
+from nets import resnet_v1, resnet_v1_views
 
 slim = tf.contrib.slim
 
 networks_map = {'inception_v4': inception_v4.inception_v4,
 				'inception_v4_views': inception_v4_views.inception_v4_views,
 				'resnet_v1_50': resnet_v1.resnet_v1_50,
-				'resnet_v1_50_views_v2': resnet_v1_views_v2.resnet_v1_50_views_v2,
+				'resnet_v1_50_views': resnet_v1_views.resnet_v1_50_views,
 				'densenet169': densenet.densenet169,
-				'densenet169_views': densenet_views.densenet169_views,
-				}
+				'densenet169_views': densenet_views.densenet169_views}
 
 arg_scopes_map = {'inception_v4': inception_v4.inception_v4_arg_scope,
 				  'inception_v4_views': inception_v4_views.inception_v4_views_arg_scope,
 				  'resnet_v1_50': resnet_v1.resnet_arg_scope,
-				  'resnet_v1_50_views_v2': resnet_v1_views_v2.resnet_arg_scope,
+				  'resnet_v1_50_views': resnet_v1_views.resnet_arg_scope,
 				  'densenet169': densenet.densenet_arg_scope,
-				  'densenet169_views': densenet_views.densenet_views_arg_scope,
-				  }
+				  'densenet169_views': densenet_views.densenet_views_arg_scope}
 
 
 def get_network_fn(name, num_classes, weight_decay=0.0, is_training=False):

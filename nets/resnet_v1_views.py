@@ -58,9 +58,9 @@ from __future__ import print_function
 
 import tensorflow as tf
 
-from nets import resnet_utils_views_v2
+from nets import resnet_utils_views
 
-resnet_arg_scope = resnet_utils_views_v2.resnet_arg_scope
+resnet_arg_scope = resnet_utils_views.resnet_arg_scope
 slim = tf.contrib.slim
 
 
@@ -91,13 +91,13 @@ def bottleneck(inputs, depth, depth_bottleneck, stride, rate=1, outputs_collecti
 	with tf.variable_scope(scope, 'bottleneck_v1', [inputs]) as sc:
 		depth_in = slim.utils.last_dimension(inputs.get_shape(), min_rank=4)
 		if depth == depth_in:
-			shortcut = resnet_utils_views_v2.subsample(inputs, stride, 'shortcut')
+			shortcut = resnet_utils_views.subsample(inputs, stride, 'shortcut')
 		else:
 			shortcut = slim.conv2d(inputs, depth, [1, 1], stride=stride, activation_fn=None, scope='shortcut')
 
 		residual = slim.conv2d(inputs, depth_bottleneck, [1, 1], stride=1, scope='conv1')
-		residual = resnet_utils_views_v2.conv2d_same(residual, depth_bottleneck, 3, stride,
-													 rate=rate, scope='conv2')
+		residual = resnet_utils_views.conv2d_same(residual, depth_bottleneck, 3, stride,
+												  rate=rate, scope='conv2')
 		residual = slim.conv2d(residual, depth, [1, 1], stride=1,
 							   activation_fn=None, scope='conv3')
 
@@ -108,16 +108,16 @@ def bottleneck(inputs, depth, depth_bottleneck, stride, rate=1, outputs_collecti
 												output)
 
 
-def resnet_v1_views_v2(inputs,
-					   blocks,
-					   num_classes=None,
-					   is_training=True,
-					   global_pool=True,
-					   output_stride=None,
-					   include_root_block=True,
-					   spatial_squeeze=True,
-					   reuse=None,
-					   scope=None):
+def resnet_v1_views(inputs,
+					blocks,
+					num_classes=None,
+					is_training=True,
+					global_pool=True,
+					output_stride=None,
+					include_root_block=True,
+					spatial_squeeze=True,
+					reuse=None,
+					scope=None):
 	"""Generator for v1 ResNet models.
 
 	This function generates a family of ResNet v1 models. See the resnet_v1_*()
@@ -177,7 +177,7 @@ def resnet_v1_views_v2(inputs,
 	"""
 	with tf.variable_scope(scope, 'resnet_v1', [inputs], reuse=reuse) as sc:
 		end_points_collection = sc.name + '_end_points'
-		with slim.arg_scope([slim.conv2d, bottleneck, resnet_utils_views_v2.stack_blocks_dense], outputs_collections=end_points_collection):
+		with slim.arg_scope([slim.conv2d, bottleneck, resnet_utils_views.stack_blocks_dense], outputs_collections=end_points_collection):
 			with slim.arg_scope([slim.batch_norm, slim.dropout], is_training=is_training):
 				net = inputs
 				if include_root_block:
@@ -185,9 +185,9 @@ def resnet_v1_views_v2(inputs,
 						if output_stride % 4 != 0:
 							raise ValueError('The output_stride needs to be a multiple of 4.')
 						output_stride /= 4
-					net = resnet_utils_views_v2.conv2d_same(net, 64, 7, stride=2, scope='conv1')
+					net = resnet_utils_views.conv2d_same(net, 64, 7, stride=2, scope='conv1')
 					net = slim.max_pool2d(net, [3, 3], stride=2, scope='pool1')
-				net, end_points = resnet_utils_views_v2.stack_blocks_dense(net, blocks, output_stride)
+				net, end_points = resnet_utils_views.stack_blocks_dense(net, blocks, output_stride)
 				if global_pool:
 					# Global average pooling.
 					net = tf.reduce_mean(net, [1, 2], name='pool5', keep_dims=True)
@@ -209,106 +209,106 @@ def resnet_v1_views_v2(inputs,
 				return logits, end_points
 
 
-resnet_v1_views_v2.default_image_size = 224
+resnet_v1_views.default_image_size = 224
 
 
-def resnet_v1_50_views_v2(inputs,
-						  num_classes=None,
-						  is_training=True,
-						  global_pool=True,
-						  output_stride=None,
-						  reuse=None,
-						  scope='resnet_v1_50'):
+def resnet_v1_50_views(inputs,
+					   num_classes=None,
+					   is_training=True,
+					   global_pool=True,
+					   output_stride=None,
+					   reuse=None,
+					   scope='resnet_v1_50'):
 	"""ResNet-50 model of [1]. See resnet_v1() for arg and return description."""
 	blocks = [
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block1', bottleneck, [(256, 64, 1)] * 2 + [(256, 64, 2)]),
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block2', bottleneck, [(512, 128, 1)] * 3 + [(512, 128, 2)]),
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block3', bottleneck, [(1024, 256, 1)] * 5 + [(1024, 256, 2)]),
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block4', bottleneck, [(2048, 512, 1)] * 3)
 	]
-	return resnet_v1_views_v2(inputs, blocks, num_classes, is_training,
-							  global_pool=global_pool, output_stride=output_stride,
-							  include_root_block=True, reuse=reuse, scope=scope)
+	return resnet_v1_views(inputs, blocks, num_classes, is_training,
+						   global_pool=global_pool, output_stride=output_stride,
+						   include_root_block=True, reuse=reuse, scope=scope)
 
 
-resnet_v1_50_views_v2.default_image_size = resnet_v1_views_v2.default_image_size
+resnet_v1_50_views.default_image_size = resnet_v1_views.default_image_size
 
 
-def resnet_v1_101_views_v2(inputs,
-						   num_classes=None,
-						   is_training=True,
-						   global_pool=True,
-						   output_stride=None,
-						   reuse=None,
-						   scope='resnet_v1_101'):
+def resnet_v1_101_views(inputs,
+						num_classes=None,
+						is_training=True,
+						global_pool=True,
+						output_stride=None,
+						reuse=None,
+						scope='resnet_v1_101'):
 	"""ResNet-101 model of [1]. See resnet_v1() for arg and return description."""
 	blocks = [
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block1', bottleneck, [(256, 64, 1)] * 2 + [(256, 64, 2)]),
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block2', bottleneck, [(512, 128, 1)] * 3 + [(512, 128, 2)]),
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block3', bottleneck, [(1024, 256, 1)] * 22 + [(1024, 256, 2)]),
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block4', bottleneck, [(2048, 512, 1)] * 3)
 	]
-	return resnet_v1_views_v2(inputs, blocks, num_classes, is_training,
-							  global_pool=global_pool, output_stride=output_stride,
-							  include_root_block=True, reuse=reuse, scope=scope)
+	return resnet_v1_views(inputs, blocks, num_classes, is_training,
+						   global_pool=global_pool, output_stride=output_stride,
+						   include_root_block=True, reuse=reuse, scope=scope)
 
 
-resnet_v1_101_views_v2.default_image_size = resnet_v1_views_v2.default_image_size
+resnet_v1_101_views.default_image_size = resnet_v1_views.default_image_size
 
 
-def resnet_v1_152_views_v2(inputs,
-						   num_classes=None,
-						   is_training=True,
-						   global_pool=True,
-						   output_stride=None,
-						   reuse=None,
-						   scope='resnet_v1_152'):
+def resnet_v1_152_views(inputs,
+						num_classes=None,
+						is_training=True,
+						global_pool=True,
+						output_stride=None,
+						reuse=None,
+						scope='resnet_v1_152'):
 	"""ResNet-152 model of [1]. See resnet_v1() for arg and return description."""
 	blocks = [
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block1', bottleneck, [(256, 64, 1)] * 2 + [(256, 64, 2)]),
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block2', bottleneck, [(512, 128, 1)] * 7 + [(512, 128, 2)]),
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block3', bottleneck, [(1024, 256, 1)] * 35 + [(1024, 256, 2)]),
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block4', bottleneck, [(2048, 512, 1)] * 3)]
-	return resnet_v1_views_v2(inputs, blocks, num_classes, is_training,
-							  global_pool=global_pool, output_stride=output_stride,
-							  include_root_block=True, reuse=reuse, scope=scope)
+	return resnet_v1_views(inputs, blocks, num_classes, is_training,
+						   global_pool=global_pool, output_stride=output_stride,
+						   include_root_block=True, reuse=reuse, scope=scope)
 
 
-resnet_v1_152_views_v2.default_image_size = resnet_v1_views_v2.default_image_size
+resnet_v1_152_views.default_image_size = resnet_v1_views.default_image_size
 
 
-def resnet_v1_200_views_v2(inputs,
-						   num_classes=None,
-						   is_training=True,
-						   global_pool=True,
-						   output_stride=None,
-						   reuse=None,
-						   scope='resnet_v1_200'):
+def resnet_v1_200_views(inputs,
+						num_classes=None,
+						is_training=True,
+						global_pool=True,
+						output_stride=None,
+						reuse=None,
+						scope='resnet_v1_200'):
 	"""ResNet-200 model of [2]. See resnet_v1() for arg and return description."""
 	blocks = [
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block1', bottleneck, [(256, 64, 1)] * 2 + [(256, 64, 2)]),
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block2', bottleneck, [(512, 128, 1)] * 23 + [(512, 128, 2)]),
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block3', bottleneck, [(1024, 256, 1)] * 35 + [(1024, 256, 2)]),
-		resnet_utils_views_v2.Block(
+		resnet_utils_views.Block(
 			'block4', bottleneck, [(2048, 512, 1)] * 3)]
-	return resnet_v1_views_v2(inputs, blocks, num_classes, is_training,
-							  global_pool=global_pool, output_stride=output_stride,
-							  include_root_block=True, reuse=reuse, scope=scope)
+	return resnet_v1_views(inputs, blocks, num_classes, is_training,
+						   global_pool=global_pool, output_stride=output_stride,
+						   include_root_block=True, reuse=reuse, scope=scope)
 
 
-resnet_v1_200_views_v2.default_image_size = resnet_v1_views_v2.default_image_size
+resnet_v1_200_views.default_image_size = resnet_v1_views.default_image_size
