@@ -11,5 +11,8 @@ function result=evalMarketWithPath(evalPath)
     disp(evalPath)
     
     noRerankingDist = pdist2(testmat, querymat, 'cosine');
-    [result.rec_rates, result.mAP, ~, ~] = evaluation(noRerankingDist, testLab, queryLab, testCam, queryCam);
+    [rec_rates, mAP, ~, ~] = evaluation(noRerankingDist, testLab, queryLab, testCam, queryCam);
+
+    result.rec_rates = 100 * rec_rates;
+    result.mAP = 100 * mAP;
  end

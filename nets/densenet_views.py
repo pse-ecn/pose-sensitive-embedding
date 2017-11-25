@@ -178,9 +178,10 @@ def densenet_views(inputs,
 				net = tf.nn.relu(net)
 				net = tf.reduce_mean(net, [1, 2], name='global_avg_pool', keep_dims=True)
 
-			net = slim.conv2d(net, 1536, 1, biases_initializer=tf.zeros_initializer(), scope='pre_logits')
+			net = slim.conv2d(net, 1536, 1, activation_fn=tf.nn.relu, biases_initializer=tf.zeros_initializer(), scope='pre_logits')
 			end_points['PreLogits'] = slim.flatten(net, 'pre_logits')
-			net = tf.nn.relu(net)
+
+			net = tf.nn.dropout(net, keep_prob=0.8)
 
 			net = slim.conv2d(net, num_classes, 1, biases_initializer=tf.zeros_initializer(), scope='logits')
 			net = slim.flatten(net)

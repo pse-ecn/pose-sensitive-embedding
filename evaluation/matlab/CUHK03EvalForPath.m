@@ -57,7 +57,7 @@ function result = CUHK03EvalForPath(evalPath)
         fprintf('  mAP,  Rank1,  Rank5,  Rank10,  Rank50\n');
         fprintf('%5.2f%%, %5.2f%%, %5.2f%%, %5.2f%%, %5.2f%%\n\n', map_eu_re(1)*100, CMC_eu_re(1) * 100, CMC_eu_re(5) * 100, CMC_eu_re(10) * 100, CMC_eu_re(50) * 100);
         
-        result.mAP = map_eu_re(1)*100;
+        result.mAP = 100 * map_eu_re(1);
         result.rec_rates = 100 * CMC_eu_re;
     end
 
