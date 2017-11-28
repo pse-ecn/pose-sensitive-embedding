@@ -1,14 +1,14 @@
-# Pose Sensitive Embedding for Person Re-Identification
+# Pose Sensitive Embedding for Person Re-Identification (PSE)
 
 In this repository, we provide the code used for our paper **A Pose-Sensitive Embedding for Person Re-Identification with Expanded Cross Neighborhood Re-Ranking**. 
 
-This includes our training and prediction framework as well as the used neural network architectures and dataset readers. The code for our [Expanded Cross Neighborhood Re-Ranking]() is located in a separate repository. This training framework is based on [Google's Tensorflow](https://www.tensorflow.org/) and the original network architectures (Resnet and Inception-v4) are inspired by the implementations provided in the [Tensorflow Models repository](https://github.com/tensorflow/models/tree/master/research/slim). All code is written in Python3 and was used with Tensorflow 1.3.
+This includes our training and prediction framework as well as the used neural network architectures and dataset readers. The code for our [Expanded Cross Neighborhood Re-Ranking]()(TODO add link) is located in a separate repository. This training framework is based on [Google's Tensorflow](https://www.tensorflow.org/) and the original network architectures (Resnet and Inception-v4) are inspired by the implementations provided in the [Tensorflow Models repository](https://github.com/tensorflow/models/tree/master/research/slim). All code is written in Python3 and was used with Tensorflow 1.3.
 
 If you find our work helpful in your research, please cite:
 
 ``` 
 M. Saquib Sarfraz, Arne Schumann, Andreas Eberle, Ranier Stiefelhagen,
-"A Pose Sensitive Embedding for Person Re-Identification with Exapanded Cross Neighborhood Re-Ranking", 
+"A Pose Sensitive Embedding for Person Re-Identification with Exapanded Cross Neighborhood Re-Ranking",
 arxiv 2017
 ```
 
@@ -52,8 +52,27 @@ python3 trainer_views.py --output=<output directory> --data=<dataset directory> 
 ```
 
 
-#### Pose Maps Models
+#### Traiing Pose Map Models
 The pose maps models are basically used the same way as the Baseline and the View models. However, to use them, you first need to generate the pose maps for the images. We did this by using the [Deeper Cut Tensorflow implementation](https://github.com/eldar/pose-tensorflow). For handling the pose maps, the datasets in our framework also have a `<dataset-name>-pose-maps` counterpart.
+
+Therefore, to train a pose maps Resnet-50 model, you can run the following:
+
+```
+python3 trainer_preid.py --output=<output directory> --data=<dataset directory> --dataset-name=market1501-pose-maps --batch-size=16 --num-epochs=100 --network-name=resnet_v1_50 --initial-checkpoint=<path to imagenet checkpoint or another checkpoint you want to load> --checkpoint-exclude-scopes=resnet_v1_50/logits,resnet_v1_50/conv1 --trainable-scopes=resnet_v1_50/logits,resnet_v1_50/conv1 --no-evaluation
+```
+
+Please note that we mainly change the `--dataset-name` parameter to `market1501-pose-maps`. However, as the Imagenet pre-trained model expects only three input layers, we cannot use the first layer of that model. Therefore we not only exclude the *logits*, but also the *conv1* layer. Accordingly, we also add this layer to the trainable layers to enable the network to learn this layer in the first training step.
+
+
+#### Training a Pose Sensitive Embedding Model (Views + Pose Maps Model)
+Our PSE models are a combination of the Views Model and the Pose Maps Model. Therefore, for training the model, the training processes are also combined. The following command can be used to train a Resnet 50 PSE model.
+
+```
+python3 trainer_preid.py --output=<output directory> --data=<dataset directory> --dataset-name=market1501-pose-maps --batch-size=16 --num-epochs=100 --network-name=resnet_v1_50_views --initial-checkpoint=<path to model with RAP pre-trained views predictor> --checkpoint-exclude-scopes=resnet_v1_50/logits --trainable-scopes=resnet_v1_50/logits,resnet_v1_50/pre_logits,resnet_v1_50/3ViewBranches --no-evaluation
+```
+
+Herem we use the dataset version providing pose maps (`market1501-pose-maps`) with the network architecture utilizing the views prediction (`resnet_v1_50_views`). It is important to note that we have to use an initial model with a trained views predictor. This is the case because we do not have view labels for the Market1501 and Duke dataset. Again, we first train all randomly initialized layers before fine-tuning the whole model afterwards.
+
 
 
 #### Using Tensorboard to track training
