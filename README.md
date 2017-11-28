@@ -2,11 +2,11 @@
 
 In this repository, we provide the code used for our paper **A Pose-Sensitive Embedding for Person Re-Identification with Expanded Cross Neighborhood Re-Ranking**. 
 
-This includes our training and prediction framework as well as the used neural network architectures and dataset readers. The code for our [Expanded Cross Neighborhood Re-Ranking]()(TODO add link) is located in a separate repository. This training framework is based on [Google's Tensorflow](https://www.tensorflow.org/) and the original network architectures (Resnet and Inception-v4) are inspired by the implementations provided in the [Tensorflow Models repository](https://github.com/tensorflow/models/tree/master/research/slim). All code is written in Python3 and was used with Tensorflow 1.3.
+This includes our training and prediction framework as well as the used neural network architectures and dataset readers. The Matlab code for our [Expanded Cross Neighborhood Re-Ranking](https://github.com/pse-ecn/expanded-cross-neighborhood) is located in a separate repository. This training framework is based on [Google's Tensorflow](https://www.tensorflow.org/) and the original network architectures (Resnet and Inception-v4) are inspired by the implementations provided in the [Tensorflow Models repository](https://github.com/tensorflow/models/tree/master/research/slim). All code is written in Python3 and was used with Tensorflow 1.3.
 
 If you find our work helpful in your research, please cite:
 
-``` 
+```
 M. Saquib Sarfraz, Arne Schumann, Andreas Eberle, Ranier Stiefelhagen,
 "A Pose Sensitive Embedding for Person Re-Identification with Exapanded Cross Neighborhood Re-Ranking",
 arxiv 2017
@@ -22,10 +22,10 @@ For training a Person Re-Id model, the `trainer_preid.py` script is used. To get
 To be able to use the dataset readers, simply extract the datasets downloaded from their project websites into an empty folder.
 
 #### Supported Datasets
-We currently support `duke`, `market1501` and `mars`. Although there are some other readers provided, we cannot give guarantees for them. To see the names used for training these datasets, have a look at the [DatasetFactory.py class]() TODO add link.
+We currently support `duke`, `market1501` and `mars`. Although there are some other readers provided, we cannot give guarantees for them. To see the names used for training these datasets, have a look at the [DatasetFactory.py class](https://github.com/pse-ecn/pose-sensitive-embedding/blob/master/datasets/DatasetFactory.py).
 
 #### Supported Network Architectures
-To see the supported network's and their names, best have a look at the [nets_factory.py script]() TODO link. Please note that the Tensorflow Models framework refers to the Resnet-50 network as `resnet_v1_50`. For the sake of compatibility, we did not change that.
+To see the supported network's and their names, best have a look at the [nets_factory.py script](https://github.com/pse-ecn/pose-sensitive-embedding/blob/master/nets/nets_factory.py). Please note that the Tensorflow Models framework refers to the Resnet-50 network as `resnet_v1_50`. For the sake of compatibility, we did not change that.
 
 
 #### Training a Resnet-50 Baseline on Market1501
