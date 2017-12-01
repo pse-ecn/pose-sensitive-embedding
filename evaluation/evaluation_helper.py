@@ -9,18 +9,14 @@ MatlabEvaluationResult = namedtuple('MatlabEvaluationResult', 'mAP,rank1,rank5,r
 EVALUATION_RESULT_FILE_NAME = 'evaluation.json'
 
 
-def run_matlab_evaluation(path, dataset_name):
+def run_matlab_evaluation(path):
 	print('Running Matlab evaluation for path %s' % path)
 
 	eng = matlab.engine.start_matlab()
 	eng.cd(r'evaluation/matlab')
 
-	if dataset_name == 'cuhk03' or dataset_name == 'cuhk03-pose-maps':
-		print('Running cuhk evaluation...')
-		eval_result = eng.CUHK03EvalForPath(path)
-	else:
-		print('Running market evaluation...')
-		eval_result = eng.MarketEvalForPath(path)
+	print('Running market evaluation...')
+	eval_result = eng.MarketEvalForPath(path)
 
 	ranks = eval_result['rec_rates'][0]
 	return MatlabEvaluationResult(mAP=eval_result['mAP'], rank1=ranks[0], rank5=ranks[4], rank10=ranks[9], rank50=ranks[49])
@@ -58,6 +54,7 @@ class MatlabEvaluationSummaryWriter:
 			self._eval_summary = tf.summary.merge_all()
 			self._eval_summary_writer = tf.summary.FileWriter(os.path.join(output_directory, 'eval'), graph)
 
+
 	def write_evaluation_result(self, global_step, evaluation_result: MatlabEvaluationResult):
 		with tf.Session(graph=self._evaluation_graph) as sess:
 			summary = sess.run(self._eval_summary, feed_dict={self._map_placeholder: evaluation_result.mAP,
@@ -70,7 +67,7 @@ class MatlabEvaluationSummaryWriter:
 
 def test():
 	directory = 'D:/development/private/masters/results/tensorflow-models/market1501/active/2017-09-27_resnet_v1_50_views_v2-pose-maps/predictions-best'
-	result = run_matlab_evaluation(directory, 'market')
+	result = run_matlab_evaluation(directory)
 	print(result)
 	save_matlab_evaluation(directory, result)
 

@@ -22,7 +22,6 @@ import functools
 
 import tensorflow as tf
 
-from nets import densenet, densenet_views
 from nets import inception_v4, inception_v4_views
 from nets import resnet_v1, resnet_v1_views
 
@@ -31,16 +30,12 @@ slim = tf.contrib.slim
 networks_map = {'inception_v4': inception_v4.inception_v4,
 				'inception_v4_views': inception_v4_views.inception_v4_views,
 				'resnet_v1_50': resnet_v1.resnet_v1_50,
-				'resnet_v1_50_views': resnet_v1_views.resnet_v1_50_views,
-				'densenet169': densenet.densenet169,
-				'densenet169_views': densenet_views.densenet169_views}
+				'resnet_v1_50_views': resnet_v1_views.resnet_v1_50_views}
 
 arg_scopes_map = {'inception_v4': inception_v4.inception_v4_arg_scope,
 				  'inception_v4_views': inception_v4_views.inception_v4_views_arg_scope,
 				  'resnet_v1_50': resnet_v1.resnet_arg_scope,
-				  'resnet_v1_50_views': resnet_v1_views.resnet_arg_scope,
-				  'densenet169': densenet.densenet_arg_scope,
-				  'densenet169_views': densenet_views.densenet_views_arg_scope}
+				  'resnet_v1_50_views': resnet_v1_views.resnet_arg_scope}
 
 
 def get_network_fn(name, num_classes, weight_decay=0.0, is_training=False):
@@ -65,10 +60,12 @@ def get_network_fn(name, num_classes, weight_decay=0.0, is_training=False):
 	arg_scope = arg_scopes_map[name](weight_decay=weight_decay)
 	func = networks_map[name]
 
+
 	@functools.wraps(func)
 	def network_fn(images, reuse=None):
 		with slim.arg_scope(arg_scope):
 			return func(images, num_classes, is_training=is_training, reuse=reuse)
+
 
 	if hasattr(func, 'default_image_size'):
 		network_fn.default_image_size = func.default_image_size
