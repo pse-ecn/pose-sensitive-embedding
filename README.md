@@ -9,7 +9,7 @@ If you find our work helpful in your research, please cite:
 ```
 M. Saquib Sarfraz, Arne Schumann, Andreas Eberle, Ranier Stiefelhagen,
 "A Pose Sensitive Embedding for Person Re-Identification with Expanded Cross Neighborhood Re-Ranking",
-https://arxiv.org/abs/1711.10378 2017.
+https://arxiv.org/abs/1711.10378 2017. [accepted at CVPR 2018]
 ```
 
 
