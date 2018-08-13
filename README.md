@@ -94,6 +94,7 @@ The predicted features will be stored in a subfolder of the specified `model-dir
 ### Download our deployed PSE Model's features or Trained model files
 
 PSE Models (Market & duke):  https://bwsyncandshare.kit.edu/dl/fiVyQmjBRDtJ9NzxuEqbSBn1/.zip
+
 You can download the PSE features for the Market-1501 and Duke datasets here
 
 https://drive.google.com/drive/folders/18eZlJIB5_WZ0tAa_SLbMJqxQS3C_76wh?usp=sharing
