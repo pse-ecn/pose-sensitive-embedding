@@ -14,7 +14,7 @@ from scipy.misc import imread, imresize
 from config import load_config
 from nnet import predict
 from dataset.pose_dataset import data_to_input
-from demo.utils import pose_map_to_image, heat_map_to_image
+#from demo.utils import pose_map_to_image, heat_map_to_image
 
 TARGET_HEIGHT = 512
 
@@ -51,7 +51,8 @@ def write_scmap(output_directory, file_name, scmap, mode, original_image_shape):
 
     if mode == 'png':
         write_combined_pose_map(file_name, file_type, original_image_shape, output_directory, scmap)
-            elif mode == 'channel-pngs':
+
+    elif mode == 'channel-pngs':
         write_channel_pose_maps(file_name, file_type, original_image_shape, output_directory, scmap)
         write_combined_pose_map(file_name, file_type, original_image_shape, output_directory, scmap)
 
@@ -79,6 +80,14 @@ def write_combined_pose_map(file_name, file_type, original_image_shape, output_d
     combined_map = pose_map_to_image(scmap)
     resized = cv2.resize(combined_map, (original_image_shape[1], original_image_shape[0]))
     cv2.imwrite(file, resized)
+
+def pose_map_to_image(pose_map):
+    max_map = np.max(pose_map, axis=-1)
+    return heat_map_to_image(max_map)
+
+
+def heat_map_to_image(max_map):
+    return np.minimum(255, np.maximum(0, 255 * max_map)).astype(np.uint8)
 
 def main():
     parser = argparse.ArgumentParser()
