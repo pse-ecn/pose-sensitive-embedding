@@ -53,7 +53,12 @@ python3 trainer_views.py --output=<output directory> --data=<dataset directory> 
 
 
 #### Traiing Pose Map Models
-The pose maps models are basically used the same way as the Baseline and the View models. However, to use them, you first need to generate the pose maps for the images. We did this by using the [Deeper Cut Tensorflow implementation](https://github.com/eldar/pose-tensorflow). For handling the pose maps, the datasets in our framework also have a `<dataset-name>-pose-maps` counterpart.
+The pose maps models are basically used the same way as the Baseline and the View models. However, to use them, you first need to generate the pose maps for the images. We did this by using the [Deeper Cut Tensorflow implementation](https://github.com/eldar/pose-tensorflow). You can use our posemaps generator and writer script here [ https://github.com/pse-ecn/pose-sensitive-embedding/blob/master/tools/images_to_pose_maps.py ]. Copy this file inside the Deeper Cut Repository and try to run it with the required command line arguments, which are defined in the main().
+...
+python3 images_to_pose_maps.py --input-pattern=/path/to/the/images/*.jpg --output-dir=/path/to/save/posemaps
+...
+
+For handling the pose maps, the datasets in our framework also have a `<dataset-name>-pose-maps` counterpart.
 
 Therefore, to train a pose maps Resnet-50 model, you can run the following:
 
@@ -71,7 +76,7 @@ Our PSE models are a combination of the Views Model and the Pose Maps Model. The
 python3 trainer_preid.py --output=<output directory> --data=<dataset directory> --dataset-name=market1501-pose-maps --batch-size=16 --num-epochs=100 --network-name=resnet_v1_50_views --initial-checkpoint=<path to model with RAP pre-trained views predictor> --checkpoint-exclude-scopes=resnet_v1_50/logits --trainable-scopes=resnet_v1_50/logits,resnet_v1_50/pre_logits,resnet_v1_50/3ViewBranches --no-evaluation
 ```
 
-Herem we use the dataset version providing pose maps (`market1501-pose-maps`) with the network architecture utilizing the views prediction (`resnet_v1_50_views`). It is important to note that we have to use an initial model with a trained views predictor. This is the case because we do not have view labels for the Market1501 and Duke dataset. Again, we first train all randomly initialized layers before fine-tuning the whole model afterwards.
+Here we use the dataset version providing pose maps (`market1501-pose-maps`) with the network architecture utilizing the views prediction (`resnet_v1_50_views`). It is important to note that we have to use an initial model with a trained views predictor. This is the case because we do not have view labels for the Market1501 and Duke dataset. Again, we first train all randomly initialized layers before fine-tuning the whole model afterwards.
 
 
 
