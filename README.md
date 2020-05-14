@@ -104,7 +104,7 @@ You can download the PSE features for the Market-1501 and Duke datasets here
 
 https://drive.google.com/drive/folders/18eZlJIB5_WZ0tAa_SLbMJqxQS3C_76wh?usp=sharing
 
-You can then evaluate these and reproduce the results in our paper using evaluation scripts at [Expanded Cross Neighborhood Re-Ranking](https://github.com/pse-ecn/expanded-cross-neighborhood).
+You can then evaluate these and reproduce the results in our paper using evaluation scripts (both Python and Matlab) at [Expanded Cross Neighborhood Re-Ranking](https://github.com/pse-ecn/expanded-cross-neighborhood).
 
 ### General Notes
 
